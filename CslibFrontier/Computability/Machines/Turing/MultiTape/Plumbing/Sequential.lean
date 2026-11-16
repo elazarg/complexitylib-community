@@ -92,10 +92,8 @@ theorem exists_runPath_seq_space_le {p₀ : tm₀.RunPath input} (h₀ : p₀.la
     ∃ p : (tm₀.seq tm₁).RunPath input, p.head = p₀.head.mapState (handOver tm₁.q₀) ∧
       p.last = p₁.last.mapState (Option.map .inr) ∧ p.length ≤ p₀.length + p₁.length ∧
       p.space ≤ p₀.space + p₁.space := by
-  obtain ⟨p, hh, hl, ht, hvisited⟩ := exists_runPath_seq h₀ h₁
-  -- the composed run visits only cells that one of the two runs visits
-  exact ⟨p, hh, hl, ht, (Finset.sum_le_sum fun i _ => (Finset.card_le_card (hvisited i)).trans
-    (Finset.card_union_le _ _)).trans_eq Finset.sum_add_distrib⟩
+  obtain ⟨p, hh, hl, ht, hspace, -⟩ := exists_runPath_seq h₀ h₁
+  exact ⟨p, hh, hl, ht, hspace⟩
 
 /-- If `tm₀` halts at step `u`, then from step `u` on `seq` mirrors `tm₁`, started where `tm₀`
 halted. -/
